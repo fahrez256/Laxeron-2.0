@@ -14,6 +14,8 @@ functionApi="https://raw.githubusercontent.com/fahrez256/Laxeron-2.0/main/fun/fu
 responsePath="/sdcard/Android/data/${LAXPKG}/files/response"
 errorPath="/sdcard/Android/data/${LAXPKG}/files/error"
 
+rm -f "$responsePath"
+
 am startservice -n "${LAXPKG}/.Storm" --es api "$functionApi" > /dev/null 2>&1
 
 while [ ! -e "$responsePath" ] && [ ! -e "$errorPath" ]; do
@@ -23,7 +25,6 @@ done
 if [ -e "$responsePath" ]; then
     cp "$responsePath" "$LAXFUNPATH"
     chmod +x "$LAXFUNPATH"
-    rm -f "$responsePath"
     $LAXFUN
 else
     echo "LAX Function not found :("
