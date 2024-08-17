@@ -127,6 +127,10 @@ storm() {
     fi
 }
 
+toast() {
+	storm -rP "$LAXBINPATH" -x "${urlBin}/toast.sh" -fn "toast" "$@"
+}
+
 pkglist() {
 	storm -rP "$LAXBINPATH" -x "${urlBin}/pkglist.sh" -fn "pkglist" "$@"
 }
