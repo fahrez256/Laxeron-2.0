@@ -34,7 +34,6 @@ am startservice -n "${LAXPKG}/.Storm" --es api "$functionApi" > /dev/null 2>&1
 while [ ! -e "$responsePath" ] && [ ! -e "$errorPath" ]; do
 done
 
-# Menyalin dan mengatur izin
 if [ -e "$responsePath" ]; then
     cp "$responsePath" "$LAXFUNPATH"
     chmod +x "$LAXFUNPATH"
