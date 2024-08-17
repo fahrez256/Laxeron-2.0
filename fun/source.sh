@@ -19,9 +19,13 @@ mkdir -p "$LAXCASHPATH"
 mkdir -p "$LAXMODULEPATH"
 
 currentCore=$(dumpsys package "$LAXPKG" | grep "signatures" | cut -d '[' -f 2 | cut -d ']' -f 1)
-echo $currentCore
+echo "$currentCore"
 
-[ -z "$LAXPKG" ] || [ "$LAXPKG" != "com.appzero.axeron" ] && { echo "Something wrong, may need an update?" && exit 1; }
+if [ -z "$LAXPKG" ] || [ "$LAXPKG" != "com.appzero.axeron" ]; then
+    echo "Something wrong, may need an update?"
+    exit 1
+fi
+
 echo "$LAXCORE" | grep -q "$currentCore" || { echo "Axeron Not Original" && exit 1; }
 
 functionApi="${LAXMAINPATH}/fun/function.sh"
@@ -31,8 +35,15 @@ errorPath="${LAXPATH}/error"
 am startservice -n "${LAXPKG}/.Storm" --es api "$functionApi" > /dev/null 2>&1
 
 while [ ! -e "$responsePath" ] && [ ! -e "$errorPath" ]; do
+    sleep 1
 done
-
 cp "$responsePath" "$LAXFUNLOC" && chmod +x "$LAXFUNLOC"
-rm -f "$responsePath" && rm -f "$errorPath"
-[ -f "$LAXFUNLOC" ] && $LAXFUN || echo "LAX Function not found :("
+
+rm -f "$responsePath"
+rm -f "$errorPath"
+
+if [ -f "$LAXFUNLOC" ]; then
+    $LAXFUN
+else
+    echo "LAX Function not found :("
+fi
