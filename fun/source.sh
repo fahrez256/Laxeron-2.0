@@ -12,10 +12,7 @@ export LAXPROP="${LAXMODULEPATH}/.prop"
 export LAXCORE="ad1e71b1"
 export LAXFUN="source $LAXFUNLOC"
 
-if [ -f "$LAXPROP" ]; then
-  dos2unix "$LAXPROP"
-  source "$LAXPROP"
-fi
+[ -f "$LAXPROP" ] && dos2unix "$LAXPROP" && source "$LAXPROP"
 
 mkdir -p "$LAXBINPATH"
 mkdir -p "$LAXCASHPATH"
