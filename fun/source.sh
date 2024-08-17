@@ -2,6 +2,7 @@ export LAXPKG="!axPkg"
 export LAXID="!axId"
 export LAXVNAME="!axVName"
 export LAXVCODE="!axVCode"
+export LAXPATH="/sdcard/Android/data/${LAXPKG}/files"
 export LAXMAIN="https://raw.githubusercontent.com/fahrez256/Laxeron-2.0/main"
 export LAXBIN="/data/local/tmp/lax_bin"
 export LAXCASH="/data/local/tmp/lax_cash"
@@ -27,8 +28,8 @@ echo $currentCore
 echo "$LAXCORE" | grep -q "$currentCore" || { echo "Axeron Not Original" && exit 1; }
 
 functionApi="${LAXMAIN}/fun/function.sh"
-responsePath="/sdcard/Android/data/${LAXPKG}/files/response"
-errorPath="/sdcard/Android/data/${LAXPKG}/files/error"
+responsePath="${LAXPATH}/response"
+errorPath="${LAXPATH}/error"
 
 rm -f "$responsePath"
 
