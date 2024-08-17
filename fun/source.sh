@@ -7,7 +7,7 @@ export LAXMODULE="/sdcard/AxModules"
 export LAXFUNPATH="${LAXBIN}/function"
 export LAXFUN="source $LAXFUNPATH"
 export LAXPROP="${LAXMODULE}/.prop"
-export LAXCORE="1234567"
+export LAXCORE="ad1e71b1"
 
 if [ -f "$LAXPROP" ]; then
   dos2unix "$LAXPROP"
@@ -20,8 +20,8 @@ mkdir -p "$LAXMODULE"
 currentCore=$(dumpsys package "$LAXPKG" | grep "signatures" | cut -d '[' -f 2 | cut -d ']' -f 1)
 echo $currentCore
 
-[[ -z $LAXPKG || $LAXPKG != "com.appzero.axeron" ]] && echo "Something wrong, may be need Update?" && exit 1
-if [ ! echo "$LAXCORE" | grep -q "$currentCore" ]; then
+{ [ -z $LAXPKG ] || [ $LAXPKG != "com.appzero.axeron" ] } && echo "Something wrong, may be need Update?" && exit 1
+if ! echo "$LAXCORE" | grep -q "$currentCore"; then
   echo "Axeron Not Original"
   exit 1
 fi
