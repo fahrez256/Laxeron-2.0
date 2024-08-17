@@ -20,11 +20,8 @@ mkdir -p "$LAXMODULE"
 currentCore=$(dumpsys package "$LAXPKG" | grep "signatures" | cut -d '[' -f 2 | cut -d ']' -f 1)
 echo $currentCore
 
-{ [ -z $LAXPKG ] || [ $LAXPKG != "com.appzero.axeron" ] } && echo "Something wrong, may be need Update?" && exit 1
-if ! echo "$LAXCORE" | grep -q "$currentCore"; then
-  echo "Axeron Not Original"
-  exit 1
-fi
+[ -z "$LAXPKG" ] || [ "$LAXPKG" != "com.appzero.axeron" ] && { echo "Something wrong, may need an update?" && exit 1; }
+echo "$LAXCORE" | grep -q "$currentCore" || { echo "Axeron Not Original" && exit 1; }
 
 functionApi="https://raw.githubusercontent.com/fahrez256/Laxeron-2.0/main/fun/function.sh"
 responsePath="/sdcard/Android/data/${LAXPKG}/files/response"
