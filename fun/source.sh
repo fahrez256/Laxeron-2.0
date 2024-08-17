@@ -29,23 +29,20 @@ fi
 echo "$LAXCORE" | grep -q "$currentCore" || { echo "Axeron Not Original" && exit 1; }
 
 functionApi="${LAXMAINPATH}/fun/function.sh"
-responsePath="${LAXPATH}/response"
-errorPath="${LAXPATH}/error"
+responsePath="${LAXPATH}/function"
+errorPath="${LAXPATH}/func.log"
 
-deleteTmp() {
-    rm -f "$responsePath"
-    rm -f "$errorPath"
-}
+rm -f "$responsePath"
+rm -f "$errorPath"
 
 deleteTmp
-am startservice -n "${LAXPKG}/.Storm" --es api "$functionApi" > /dev/null 2>&1
+am startservice -n "${LAXPKG}/.Storm" --es api "$functionApi" --es successName "function" --es errorName "func.log"> /dev/null 2>&1
 
 while [ ! -e "$responsePath" ] && [ ! -e "$errorPath" ]; do
     sleep 1
 done
 
 cp "$responsePath" "$LAXFUNLOC" && chmod +x "$LAXFUNLOC"
-deleteTmp
 
 if [ -f "$LAXFUNLOC" ]; then
     $LAXFUN
