@@ -126,3 +126,7 @@ storm() {
         cat "$errorPath" && echo
     fi
 }
+
+pkglist() {
+	storm -rP "$LAXBINPATH" -x "${urlBin}/pkglist.sh" -fn "pkglist" "$@"
+}
