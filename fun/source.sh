@@ -7,7 +7,7 @@ export LAXMODULE="/sdcard/AxModules"
 export LAXFUNPATH="${LAXBIN}/function"
 export LAXFUN="source $LAXFUNPATH"
 export LAXPROP="${LAXMODULE}/.prop"
-export LAXCORE="ad1e71b1"
+export LAXCORE="1223"
 
 if [ -f "$LAXPROP" ]; then
   dos2unix "$LAXPROP"
