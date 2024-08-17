@@ -32,6 +32,7 @@ responsePath="${LAXPATH}/response"
 errorPath="${LAXPATH}/error"
 
 rm -f "$responsePath"
+rm -f "$errorPath"
 
 am startservice -n "${LAXPKG}/.Storm" --es api "$functionApi" > /dev/null 2>&1
 
