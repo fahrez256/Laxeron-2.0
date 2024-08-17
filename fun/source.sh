@@ -16,7 +16,8 @@ errorPath="/sdcard/Android/data/${LAXPKG}/files/error"
 
 am startservice -n "${LAXPKG}/.Storm" --es api "$functionApi" > /dev/null 2>&1
 
-while [ ! -e "$responsePath" ] && [ ! -e "$errorPath" ]; do; done
+while [ ! -e "$responsePath" ] && [ ! -e "$errorPath" ]; do
+done
 
 # Menyalin dan mengatur izin
 if [ -e "$responsePath" ]; then
