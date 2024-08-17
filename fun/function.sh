@@ -130,3 +130,7 @@ storm() {
 pkglist() {
 	storm -rP "$LAXBINPATH" -x "${urlBin}/pkglist.sh" -fn "pkglist" "$@"
 }
+
+ax() {
+	storm -rP "$LAXBINPATH" -x "${urlBin}/ax2.sh" -fn "ax2" "$@"
+}
