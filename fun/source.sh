@@ -1,21 +1,29 @@
 export LAXPKG="!axPkg"
 export LAXID="!axId"
 export LAXVNAME="!axVName"
-export LAXVCODE=!axVCode
+export LAXVCODE="!axVCode" # Tambahkan tanda kutip untuk nilai variabel jika perlu
 export LAXBIN="/data/local/tmp/lax_bin"
 export LAXMODULE="/sdcard/AxModules"
 export LAXFUNPATH="${LAXBIN}/function"
 export LAXFUN=". $LAXFUNPATH"
+
 mkdir -p "$LAXBIN"
 mkdir -p "$LAXMODULE"
-local functionApi="https://raw.githubusercontent.com/fahrez256/Laxeron-2.0/main/fun/function.sh"
-local responsePath="/sdcard/Android/data/${LAXPKG}/files/response"
-local errorPath="/sdcard/Android/data/${LAXPKG}/files/error"
+
+functionApi="https://raw.githubusercontent.com/fahrez256/Laxeron-2.0/main/fun/function.sh"
+responsePath="/sdcard/Android/data/${LAXPKG}/files/response"
+errorPath="/sdcard/Android/data/${LAXPKG}/files/error"
+
 am startservice -n "${LAXPKG}/.Storm" --es api "$functionApi" > /dev/null 2>&1
-echo $responsePath
-while [ ! -e "$responsePath" ] && [ ! -e "$errorPath" ]; do
-done
-cp "$responsePath" "$LAXFUNPATH"
-chmod +x "$LAXFUNPATH"
-$LAXFUN
-}
+
+while [ ! -e "$responsePath" ] && [ ! -e "$errorPath" ]; do; done
+
+# Menyalin dan mengatur izin
+if [ -e "$responsePath" ]; then
+    cp "$responsePath" "$LAXFUNPATH"
+    chmod +x "$LAXFUNPATH"
+    rm -f "$responsePath"
+    $LAXFUN
+else
+    echo "LAX Function not found :("
+fi
