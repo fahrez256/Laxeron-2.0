@@ -102,12 +102,9 @@ storm() {
         echo "Error: No API URL provided."
         return 1
     fi
-
-    deleteTmp() {
-        rm -f "$responsePath"
-        rm -f "$errorPath"
-    }
-    deleteTmp
+    
+    rm -f "$responsePath"
+    rm -f "$errorPath"
     
     am startservice -n "${LAXPKG}/.Storm" --es api "$api" > /dev/null 2>&1
 
@@ -129,5 +126,4 @@ storm() {
     elif [ -e "$errorPath" ]; then
         echo $(cat "$errorPath")
     fi
-    deleteTmp
 }
