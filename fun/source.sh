@@ -16,7 +16,6 @@ export LAXFUN="source $LAXFUNLOC"
 
 [ -f "$LAXPROP" ] && dos2unix "$LAXPROP" && source "$LAXPROP"
 
-mkdir -p "$LAXCACHEPATH"
 mkdir -p "$LAXBINPATH"
 mkdir -p "$LAXCASHPATH"
 mkdir -p "$LAXMODULEPATH"
@@ -32,8 +31,8 @@ fi
 echo "$LAXCORE" | grep -q "$currentCore" || { echo "Axeron Not Original" && exit 1; }
 
 functionApi="${LAXMAINPATH}/fun/function.sh"
-responsePath="${LAXPATH}/function"
-errorPath="${LAXPATH}/func.log"
+responsePath="${LAXFILEPATH}/function"
+errorPath="${LAXFILEPATH}/func.log"
 
 rm -f "$responsePath"
 rm -f "$errorPath"
