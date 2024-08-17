@@ -7,7 +7,7 @@ export LAXMODULE="/sdcard/AxModules"
 export LAXFUNPATH="${LAXBIN}/function"
 export LAXFUN=". $LAXFUNPATH"
 mkdir -p $LAXMODULE
-local functionApi=""
+local functionApi="https://raw.githubusercontent.com/fahrez256/Laxeron-2.0/main/fun/function.sh"
 local responsePath="/sdcard/data/${AXERONPKG}/files/response"
 local errorPath="/sdcard/data/${AXERONPKG}/files/error"
 am startservice -n ${AXERONPKG}/.Storm --es api "$functionApi" > /dev/null 2>&1
