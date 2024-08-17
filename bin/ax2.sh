@@ -59,7 +59,7 @@ ax() {
 	cacheFile="${LAXCACHEPATH}/modules_list.txt"
 	mkdir -p "$LAXCACHEPATH"
 	
-	find "$modulePath" -type f -iname "*.zip" > "$cacheFile"
+	find "$LAXMODULEPATH" -type f -iname "*.zip" > "$cacheFile"
 
 	while IFS= read -r file; do
 		ctr=$((ctr + 1))
