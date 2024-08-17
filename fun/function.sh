@@ -1,1 +1,1 @@
-echo "Hello Im the Function :)"
+echo "Hello Im the Function $LAXPKG :)"
