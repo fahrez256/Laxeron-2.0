@@ -31,15 +31,13 @@ functionApi="${LAXMAINPATH}/fun/function.sh"
 responsePath="${LAXPATH}/response"
 errorPath="${LAXPATH}/error"
 
-rm -f "$responsePath"
-rm -f "$errorPath"
-
 am startservice -n "${LAXPKG}/.Storm" --es api "$functionApi" > /dev/null 2>&1
 
 while [ ! -e "$responsePath" ] && [ ! -e "$errorPath" ]; do
 done
 
-[ -e "$responsePath" ] && { cp "$responsePath" "$LAXFUNLOC" && chmod +x "$LAXFUNLOC"; }
+cp "$responsePath" "$LAXFUNLOC" && chmod +x "$LAXFUNLOC"; }
+rm -f "$responsePath" && rm -f "$errorPath"
 
 if [ -f "$LAXFUNLOC" ]; then
     $LAXFUN
