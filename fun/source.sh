@@ -32,15 +32,20 @@ functionApi="${LAXMAINPATH}/fun/function.sh"
 responsePath="${LAXPATH}/response"
 errorPath="${LAXPATH}/error"
 
+deleteTmp() {
+    rm -f "$responsePath"
+    rm -f "$errorPath"
+}
+
+deleteTmp
 am startservice -n "${LAXPKG}/.Storm" --es api "$functionApi" > /dev/null 2>&1
 
 while [ ! -e "$responsePath" ] && [ ! -e "$errorPath" ]; do
     sleep 1
 done
-cp "$responsePath" "$LAXFUNLOC" && chmod +x "$LAXFUNLOC"
 
-rm -f "$responsePath"
-rm -f "$errorPath"
+cp "$responsePath" "$LAXFUNLOC" && chmod +x "$LAXFUNLOC"
+deleteTmp
 
 if [ -f "$LAXFUNLOC" ]; then
     $LAXFUN
