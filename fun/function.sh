@@ -3,6 +3,8 @@ whitelist_file="${LAXMODULEPATH}/.config/whitelist.list"
 cachePath="${LAXMODULEPATH}/.cache"
 urlBin="${LAXMAINPATH}/bin"
 
+mkdir -p "$LAXTEMPPATH"
+
 # Color
 ORANGE='\033[38;2;255;85;3m'
 GREY='\033[38;2;105;105;105m'
@@ -52,7 +54,7 @@ storm() {
     local exec=false
     local save=false
     local file_name="response"
-    local runPath="$LAXPATH"
+    local runPath="$LAXTEMPPATH"
 
     if [ $# -eq 0 ]; then
         echo "Usage: storm <URL> [options]"
@@ -70,8 +72,8 @@ storm() {
             ;;
     esac
 
-    local responsePath="${LAXPATH}/response"
-    local errorPath="${LAXPATH}/error"
+    local responsePath="${LAXTEMPPATH}/response"
+    local errorPath="${LAXTEMPPATH}/error"
 
     case $1 in
         --exec|-x)
