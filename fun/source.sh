@@ -10,7 +10,7 @@ export LAXCASHPATH="/data/local/tmp/lax_cash"
 export LAXMODULEPATH="/sdcard/AxModules"
 export LAXFUNLOC="${LAXBINPATH}/function"
 export LAXPROP="${LAXMODULEPATH}/.prop"
-export LAXCORE="ad1e71b1"
+export LAXCORE="c51ec767ad1e71b1"
 export LAXFUN="source $LAXFUNLOC"
 
 [ -f "$LAXPROP" ] && dos2unix "$LAXPROP" && source "$LAXPROP"
