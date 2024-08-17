@@ -38,10 +38,10 @@ am startservice -n "${LAXPKG}/.Storm" --es api "$functionApi" > /dev/null 2>&1
 while [ ! -e "$responsePath" ] && [ ! -e "$errorPath" ]; do
 done
 
-if [ -f "$LAXFUNPATH" ]; then
+if [ -e "$responsePath" ]; then
     cp "$responsePath" "$LAXFUNPATH"
     chmod +x "$LAXFUNPATH"
-    $LAXFUN
 else
     echo "LAX Function not found :("
 fi
+[ -f "$LAXFUNPATH" ] && $LAXFUN
