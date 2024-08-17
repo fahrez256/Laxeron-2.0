@@ -103,9 +103,12 @@ storm() {
         return 1
     fi
 
-    rm -f "$responsePath"
-    rm -f "$errorPath"
-
+    deleteTmp() {
+        rm -f "$responsePath"
+        rm -f "$errorPath"
+    }
+    deleteTmp
+    
     am startservice -n "${LAXPKG}/.Storm" --es api "$api" > /dev/null 2>&1
 
     while [ ! -e "$responsePath" ] && [ ! -e "$errorPath" ]; do
@@ -121,9 +124,10 @@ storm() {
             cp "$responsePath" "${runPath}/$file_name"
             chmod +x "${runPath}/$file_name"
         else
-            echo -e $(cat "$responsePath")
+            echo $(cat "$responsePath")
         fi
     elif [ -e "$errorPath" ]; then
-        echo -e $(cat "$errorPath")
+        echo $(cat "$errorPath")
     fi
+    deleteTmp
 }
