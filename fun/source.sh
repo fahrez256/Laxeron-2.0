@@ -22,6 +22,7 @@ echo $currentCore
 
 [ -z "$LAXPKG" ] || [ "$LAXPKG" != "com.appzero.axeron" ] && { echo "Something wrong, may need an update?" && exit 1; }
 echo "$LAXCORE" | grep -q "$currentCore" || { echo "Axeron Not Original" && exit 1; }
+exit 1
 
 functionApi="https://raw.githubusercontent.com/fahrez256/Laxeron-2.0/main/fun/function.sh"
 responsePath="/sdcard/Android/data/${LAXPKG}/files/response"
