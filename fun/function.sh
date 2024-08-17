@@ -120,9 +120,9 @@ storm() {
             cp "$responsePath" "${runPath}/$file_name"
             chmod +x "${runPath}/$file_name"
         else
-            echo $(cat "$responsePath")
+            cat "$responsePath" && echo
         fi
     elif [ -e "$errorPath" ]; then
-        echo $(cat "$errorPath")
+        cat "$errorPath" && echo
     fi
 }
