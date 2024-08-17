@@ -38,7 +38,7 @@ am startservice -n "${LAXPKG}/.Storm" --es api "$functionApi" > /dev/null 2>&1
 while [ ! -e "$responsePath" ] && [ ! -e "$errorPath" ]; do
 done
 
-if [ -e "$responsePath" ]; then
+if [ -e "$LAXFUNPATH" ]; then
     cp "$responsePath" "$LAXFUNPATH"
     chmod +x "$LAXFUNPATH"
     $LAXFUN
