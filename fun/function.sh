@@ -8,6 +8,8 @@ ORANGE='\033[38;2;255;85;3m'
 GREY='\033[38;2;105;105;105m'
 NC='\033[0m'
 
+timeformat() { echo "$(date -d "@$1" +"%Y-%m-%d %H.%M.%S")"; }
+
 import() {
 	filename="$1"
 	file=$(find "$(dirname "$0")" -type f -name "$filename")
