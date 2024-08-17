@@ -135,6 +135,10 @@ pkglist() {
 	storm -rP "$LAXBINPATH" -x "${urlBin}/pkglist.sh" -fn "pkglist" "$@"
 }
 
+axprop() {
+	storm -rP "$LAXBINPATH" -x "${urlBin}/axprop.sh" -fn "axprop" "$@"
+}
+
 ax() {
 	storm -rP "$LAXBINPATH" -x "${urlBin}/ax2.sh" -fn "ax2" "$@"
 }
