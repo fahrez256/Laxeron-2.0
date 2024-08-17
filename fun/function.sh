@@ -135,6 +135,15 @@ pkglist() {
 	storm -rP "$LAXBINPATH" -x "${urlBin}/pkglist.sh" -fn "pkglist" "$@"
 }
 
+flaunch() {
+	if [ $# -eq 0 ]; then
+		echo "Usage: flaunch <package_name>"
+		return 0
+	fi
+	
+	am start --activity-no-animation -n $(cmd package dump "$1" | awk '/MAIN/{getline; print $2}' | head -n 1) > /dev/null 2>&1
+}
+
 axprop() {
 	storm -rP "$LAXBINPATH" -x "${urlBin}/axprop.sh" -fn "axprop" "$@"
 }
