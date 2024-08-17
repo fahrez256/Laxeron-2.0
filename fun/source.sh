@@ -38,9 +38,4 @@ done
 
 cp "$responsePath" "$LAXFUNLOC" && chmod +x "$LAXFUNLOC"
 rm -f "$responsePath" && rm -f "$errorPath"
-
-if [ -f "$LAXFUNLOC" ]; then
-    $LAXFUN
-else
-    echo "LAX Function not found :("
-fi
+[ -f "$LAXFUNLOC" ] && $LAXFUN || echo "LAX Function not found :("
