@@ -1,7 +1,7 @@
 export LAXPKG="!axPkg"
 export LAXID="!axId"
 export LAXVNAME="!axVName"
-export LAXVCODE="!axVCode" # Tambahkan tanda kutip untuk nilai variabel jika perlu
+export LAXVCODE="!axVCode"
 export LAXBIN="/data/local/tmp/lax_bin"
 export LAXMODULE="/sdcard/AxModules"
 export LAXFUNPATH="${LAXBIN}/function"
