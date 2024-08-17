@@ -1,7 +1,7 @@
 #global
-whitelist_file="${LAXMODULE}/.config/whitelist.list"
-cachePath="${LAXMODULE}/.cache"
-urlBin="${LAXMAIN}/bin"
+whitelist_file="${LAXMODULEPATH}/.config/whitelist.list"
+cachePath="${LAXMODULEPATH}/.cache"
+urlBin="${LAXMAINPATH}/bin"
 
 #color
 ORANGE='\033[38;2;255;85;3m'
@@ -9,24 +9,24 @@ GREY='\033[38;2;105;105;105m'
 NC='\033[0m'
 
 import() {
-  	filename="$1"
-  	file=$(find "$(dirname "$0")" -type f -name "$filename")
-  	
-  	if [ -z "$file" ]; then
-  		    dir="$(dirname "$0")"
-  		    while [ "$dir" != "$LAXCASH" ]; do
-  			        # Cari file di direktori saat ini
-  			        file=$(find "$dir" -maxdepth 1 -name "$filename")
-  			        if [ -n "$file" ]; then
-  			            file="$file"
-  			            break
-  			        fi
-  			        dir="$(dirname "$dir")"
-  		    done
-  	fi
-  	dos2unix $file
-  	source $file
-   	eval path_$(echo "$filename" | tr -cd '[:alnum:]_-')="$file"
+	filename="$1"
+	file=$(find "$(dirname "$0")" -type f -name "$filename")
+	
+	if [ -z "$file" ]; then
+		    dir="$(dirname "$0")"
+		    while [ "$dir" != "$LAXCASHPATH" ]; do
+				# Cari file di direktori saat ini
+				file=$(find "$dir" -maxdepth 1 -name "$filename")
+				if [ -n "$file" ]; then
+				    file="$file"
+				    break
+				fi
+				dir="$(dirname "$dir")"
+		    done
+	fi
+	dos2unix $file
+	source $file
+	eval path_$(echo "$filename" | tr -cd '[:alnum:]_-')="$file"
 }
 
 rozaq() {
