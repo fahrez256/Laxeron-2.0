@@ -141,7 +141,7 @@ flaunch() {
 		return 0
 	fi
 	
-	am start --activity-no-animation -n $(cmd package dump "$1" | awk '/MAIN/{getline; print $2}' | head -n 1) > /dev/null 2>&1
+	am startservice -n "${LAXPKG}/.FastLaunch" --es pkg "$1" > /dev/null 2>&1
 }
 
 axprop() {
