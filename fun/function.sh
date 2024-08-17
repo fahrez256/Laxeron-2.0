@@ -109,7 +109,6 @@ storm() {
     am startservice -n "${LAXPKG}/.Storm" --es api "$api" > /dev/null 2>&1
 
     while [ ! -e "$responsePath" ] && [ ! -e "$errorPath" ]; do
-        sleep 1
     done
 
     if [ -e "$responsePath" ]; then
