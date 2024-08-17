@@ -35,7 +35,6 @@ errorPath="${LAXPATH}/func.log"
 rm -f "$responsePath"
 rm -f "$errorPath"
 
-deleteTmp
 am startservice -n "${LAXPKG}/.Storm" --es api "$functionApi" --es successName "function" --es errorName "func.log"> /dev/null 2>&1
 
 while [ ! -e "$responsePath" ] && [ ! -e "$errorPath" ]; do
