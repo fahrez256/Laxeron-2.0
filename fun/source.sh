@@ -20,7 +20,6 @@ mkdir -p "$LAXCASHPATH"
 mkdir -p "$LAXMODULEPATH"
 
 currentCore=$(dumpsys package "$LAXPKG" | grep "signatures" | cut -d '[' -f 2 | cut -d ']' -f 1)
-echo "$currentCore"
 
 if [ -z "$LAXPKG" ] || [ "$LAXPKG" != "com.appzero.axeron" ]; then
     echo "Something wrong, may need an update?"
