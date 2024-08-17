@@ -1,6 +1,11 @@
 $LAXFUN
 ax() {
-	local showLog=true
+	if [ $# -eq 0 ]; then
+		echo "Usage: ax <id_module> [options] [arguments]"
+		exit 1
+	fi
+ 
+	local showLog=false
 
 	log() { 
 		[ "$showLog" = true ] && echo -e "${ORANGE}${1}${NC} ${GREY}${2}${NC}"; 
@@ -10,10 +15,27 @@ ax() {
 		showLog=true
 		shift
 	fi
-	
+
 	local nameDir="$1"
 	local cachePath="${LAXMODULEPATH}/.cache"
 	local cash="${LAXCASHPATH}"
+	mkdir -p "$cachePath" "$cash"
+
+	case $1 in
+		--help|-h)
+			echo "Usage: ax <id_module> [options] [arguments]"
+			echo "Options:"
+			echo "  --remove, -r <module>: Remove a module from path"
+			echo "  --list, -l: List installed modules"
+			echo "  --help, -h: Show this help message"
+			return 0
+			;;
+		--list|-l)
+			echo "Installed Modules:"
+			find "$cash" -type f -name "axeron.prop" -exec dirname {} \; | xargs -n1 basename
+			return 0
+			;;
+	esac
 	
 	start_time=$(date +%s%3N)
 	log "[Starting FAX]" "$nameDir"
@@ -34,8 +56,8 @@ ax() {
 
 	ctr=0
 	idFound=false
-	cacheFile="/data/local/tmp/lax_cache/modules_list.txt"
-	mkdir -p "/data/local/tmp/lax_cache"
+	cacheFile="${LAXCACHEPATH}/modules_list.txt"
+	mkdir -p "$LAXCACHEPATH"
 	
 	find "$modulePath" -type f -iname "*.zip" > "$cacheFile"
 
