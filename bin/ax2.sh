@@ -1,5 +1,4 @@
 $LAXFUN
-echo "$# $@"
 ax() {
 	if [ $# -eq 0 ]; then
 		echo "Usage: ax <id_module> [options] [arguments]"
@@ -39,7 +38,7 @@ ax() {
 	esac
 	
 	start_time=$(date +%s%3N)
-	log "[Starting FAX]" "$nameDir"
+	log "[Starting Fast-AX]" "$nameDir"
 	
 	pathCash=$(find "$cash" -type d -iname "$nameDir")
 	if [ -n "$pathCash" ]; then
