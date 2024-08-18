@@ -21,8 +21,8 @@ mkdir -p "$LAXBINPATH" "$LAXCASHPATH" "$LAXMODULEPATH"
 currentCore=$(dumpsys package "$LAXPKG" | grep "signatures" | cut -d '[' -f 2 | cut -d ']' -f 1)
 
 if [ -z "$LAXPKG" ] || [ "$LAXPKG" != "com.appzero.axeron" ]; then
-    echo "Something wrong, may need an update?"
-    exit 1
+	echo "Something wrong, may need an update?"
+	exit 1
 fi
 
 echo "$LAXCORE" | grep -q "$currentCore" || { echo "Axeron Not Original" && exit 1; }
@@ -34,6 +34,7 @@ useCache=false
 
 if [ -f "$LAXFUNLOC" ]; then
 	[ -e "$responsePath" ] && cp "$responsePath" "$LAXFUNLOC" && chmod +x "$LAXFUNLOC"
+	$LAXFUN
 	useCache=true
 fi
 
@@ -48,8 +49,8 @@ if [ "$useCache" = false ]; then
 	cp "$responsePath" "$LAXFUNLOC" && chmod +x "$LAXFUNLOC"
 
 	if [ -f "$LAXFUNLOC" ]; then
-	    $LAXFUN
+		$LAXFUN
 	else
-	    echo "LAX Function not found :("
+		echo "LAX Function not found :("
 	fi
 fi
