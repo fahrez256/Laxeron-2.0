@@ -125,10 +125,10 @@ storm() {
 			cp "$LAXCACHEPATH/$successName" "${runPath}/$file_name"
 			chmod +x "${runPath}/$file_name"
 		else
-			cat "$responsePath" && echo
+			cat "$responseLoc" && echo
 		fi
-	elif [ -e "$errorPath" ]; then
-		cat "$errorPath" && echo
+	elif [ -e "$errorLoc" ]; then
+		cat "$errorLoc" && echo
 	fi
 }
 
