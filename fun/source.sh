@@ -33,7 +33,7 @@ errorPath="${LAXFILEPATH}/func.log"
 useCache=false
 
 if [ -f "$LAXFUNLOC" ]; then
-	cp "$responsePath" "$LAXFUNLOC" && chmod +x "$LAXFUNLOC"
+	[ -e "$responsePath" ] cp "$responsePath" "$LAXFUNLOC" && chmod +x "$LAXFUNLOC"
 	useCache=true
 fi
 
