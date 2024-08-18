@@ -14,7 +14,7 @@ export LAXPROP="${LAXMODULEPATH}/.prop"
 export LAXCORE="c51ec767ad1e71b1"
 export LAXFUN="source $LAXFUNLOC"
 
-[ -f "$LAXPROP" ] && dos2unix "$LAXPROP" && source "$LAXPROP"
+[ -f "$LAXPROP" ] && dos2unix "$LAXPROP" && source "$LAXPROP" "$@"
 
 mkdir -p "$LAXBINPATH" "$LAXCASHPATH" "$LAXMODULEPATH"
 
