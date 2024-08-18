@@ -53,6 +53,7 @@ storm() {
 	local save=false
 	local file_name="response"
 	local runPath="$LAXFILEPATH"
+	local useCache=false
 	mkdir -p "$LAXCACHEPATH"
 
 	if [ $# -eq 0 ]; then
@@ -105,30 +106,44 @@ storm() {
 	
 	local responseLoc="${LAXFILEPATH}/$successName"
 	local errorLoc="${LAXFILEPATH}/$errorName"
+	local cacheSuccess="$LAXCACHEPATH/$successName"
+	local cacheError="$LAXCACHEPATH/$errorName"
 	
-	rm -f "$responseLoc"
-	rm -f "$errorLoc"
-	
-	am startservice -n "${LAXPKG}/.Storm" --es api "$api" --es successName "$successName" --es errorName "$errorName" > /dev/null 2>&1
-
-	while [ ! -e "$responseLoc" ] && [ ! -e "$errorLoc" ]; do
-	done
-
-	if [ -e "$responseLoc" ]; then
+	onResponse() {
 		if [ "$exec" = true ]; then
 			mv "$responseLoc" "$LAXCACHEPATH/"
-			cp "$LAXCACHEPATH/$successName" "${runPath}/$file_name"
+			cp "$cacheSuccess" "${runPath}/$file_name"
 			chmod +x "${runPath}/$file_name"
 			"${runPath}/$file_name" "$@"
 		elif [ "$save" = true ]; then
 			mv "$responseLoc" "$LAXCACHEPATH/"
-			cp "$LAXCACHEPATH/$successName" "${runPath}/$file_name"
+			cp "$cacheSuccess" "${runPath}/$file_name"
 			chmod +x "${runPath}/$file_name"
 		else
-			cat "$responseLoc" && echo
+			mv "$responseLoc" "$LAXCACHEPATH/"
+			cat "$cacheSuccess" && echo
 		fi
+	}
+	
+	if [ -e "$cacheSuccess" ]; then
+		onResponse
+		useCache=true
+	fi
+	
+	rm -f "$cacheSuccess" "$cacheError"
+	
+	am startservice -n "${LAXPKG}/.Storm" --es api "$api" --es successName "$successName" --es errorName "$errorName" > /dev/null 2>&1
+
+	[ "$useCache" = true ] && exit 0
+	
+	while [ ! -e "$responseLoc" ] && [ ! -e "$errorLoc" ]; do
+	done
+
+	if [ -e "$responseLoc" ]; then
+		onResponse
 	elif [ -e "$errorLoc" ]; then
-		cat "$errorLoc" && echo
+		mv "$errorLoc" "$LAXCACHEPATH/"
+		cat "$cacheError" && echo
 	fi
 }
 
