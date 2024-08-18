@@ -16,9 +16,7 @@ export LAXFUN="source $LAXFUNLOC"
 
 [ -f "$LAXPROP" ] && dos2unix "$LAXPROP" && source "$LAXPROP"
 
-mkdir -p "$LAXBINPATH"
-mkdir -p "$LAXCASHPATH"
-mkdir -p "$LAXMODULEPATH"
+mkdir -p "$LAXBINPATH" "$LAXCASHPATH" "$LAXMODULEPATH"
 
 currentCore=$(dumpsys package "$LAXPKG" | grep "signatures" | cut -d '[' -f 2 | cut -d ']' -f 1)
 
@@ -32,19 +30,26 @@ echo "$LAXCORE" | grep -q "$currentCore" || { echo "Axeron Not Original" && exit
 functionApi="${LAXMAINPATH}/fun/function.sh"
 responsePath="${LAXFILEPATH}/function"
 errorPath="${LAXFILEPATH}/func.log"
+useCache=false
 
-rm -f "$responsePath"
-rm -f "$errorPath"
+if [ -f "$LAXFUNLOC" ]; then
+	cp "$responsePath" "$LAXFUNLOC" && chmod +x "$LAXFUNLOC"
+	useCache=true
+fi
+
+rm -f "$responsePath" "$errorPath"
 
 am startservice -n "${LAXPKG}/.Storm" --es api "$functionApi" --es successName "function" --es errorName "func.log" > /dev/null 2>&1
 
-while [ ! -e "$responsePath" ] && [ ! -e "$errorPath" ]; do
-done
+if [ "$useCache" = false ]; then
+	while [ ! -e "$responsePath" ] && [ ! -e "$errorPath" ]; do
+	done
+	
+	cp "$responsePath" "$LAXFUNLOC" && chmod +x "$LAXFUNLOC"
 
-cp "$responsePath" "$LAXFUNLOC" && chmod +x "$LAXFUNLOC"
-
-if [ -f "$LAXFUNLOC" ]; then
-    $LAXFUN
-else
-    echo "LAX Function not found :("
+	if [ -f "$LAXFUNLOC" ]; then
+	    $LAXFUN
+	else
+	    echo "LAX Function not found :("
+	fi
 fi
