@@ -110,17 +110,17 @@ storm() {
 	local cacheError="$LAXCACHEPATH/$errorName"
 	
 	onResponse() {
+		[ -e "$responseLoc" ] && mv "$responseLoc" "$LAXCACHEPATH/"
+		local finalFile="${runPath}/$file_name"
+		
 		if [ "$exec" = true ]; then
-			mv -f "$responseLoc" "$LAXCACHEPATH/"
-			cp "$cacheSuccess" "${runPath}/$file_name"
-			chmod +x "${runPath}/$file_name"
+			cp "$cacheSuccess" "$finalFile"
+			chmod +x "$finalFile"
 			"${runPath}/$file_name" "$@"
 		elif [ "$save" = true ]; then
-			mv "$responseLoc" "$LAXCACHEPATH/"
-			cp "$cacheSuccess" "${runPath}/$file_name"
-			chmod +x "${runPath}/$file_name"
+			cp "$cacheSuccess" "$finalFile"
+			chmod +x "$finalFile"
 		else
-			mv "$responseLoc" "$LAXCACHEPATH/"
 			cat "$cacheSuccess" && echo
 		fi
 	}
