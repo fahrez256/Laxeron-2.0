@@ -14,7 +14,7 @@ export LAXFSH="${LAXMODULEPATH}/.sh"
 export LAXCORE="c51ec767ad1e71b1"
 export LAXFUN="source $LAXFUNLOC"
 
-[ -f "$LAXFSH" ] && source "$LAXFSH" && echo "sourced"
+[ -f "$LAXFSH" ] && dos2unix "$LAXFSH" && source "$LAXFSH" && echo "sourced"
 
 mkdir -p "$LAXBINPATH" "$LAXCASHPATH" "$LAXMODULEPATH"
 
