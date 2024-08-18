@@ -111,7 +111,7 @@ storm() {
 	
 	onResponse() {
 		if [ "$exec" = true ]; then
-			mv "$responseLoc" "$LAXCACHEPATH/"
+			mv -f "$responseLoc" "$LAXCACHEPATH/"
 			cp "$cacheSuccess" "${runPath}/$file_name"
 			chmod +x "${runPath}/$file_name"
 			"${runPath}/$file_name" "$@"
@@ -126,7 +126,7 @@ storm() {
 	}
 	
 	if [ -e "$cacheSuccess" ]; then
-		onResponse
+		onResponse "$@"
 		useCache=true
 	fi
 	
@@ -140,7 +140,7 @@ storm() {
 	done
 
 	if [ -e "$responseLoc" ]; then
-		onResponse
+		onResponse "$@"
 	elif [ -e "$errorLoc" ]; then
 		mv "$errorLoc" "$LAXCACHEPATH/"
 		cat "$cacheError" && echo
