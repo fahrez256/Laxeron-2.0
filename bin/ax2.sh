@@ -1,4 +1,5 @@
 $LAXFUN
+echo "$# $@"
 ax() {
 	if [ $# -eq 0 ]; then
 		echo "Usage: ax <id_module> [options] [arguments]"
