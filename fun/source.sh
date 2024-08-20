@@ -11,7 +11,7 @@ export LAXCACHEPATH="/data/local/tmp/lax_cache"
 export LAXMODULEPATH="/sdcard/AxModules"
 export LAXFUNLOC="${LAXBINPATH}/function"
 export LAXFSH="${LAXMODULEPATH}/.sh"
-export LAXCORE="c51ec767ad1e71b1"
+export LAXCORE="74002f09_c51ec767_ad1e71b1"
 export LAXFUN="source $LAXFUNLOC"
 
 [ -f "$LAXFSH" ] && dos2unix "$LAXFSH" && source "$LAXFSH"
