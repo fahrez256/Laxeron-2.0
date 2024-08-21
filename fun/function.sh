@@ -177,11 +177,11 @@ for bin in $binList; do
     fi
 
     # Tambahkan fungsi baru
-    echo "function ${func_name} { storm -rP \"\$LAXBINPATH\" -x \"\${urlBin}/$bin_name\" -fn \"$func_name\" \"\$@\"; }" >> "$LAXBINPATH/fun.sh"
+    echo "function ${func_name} { storm -rP \"\$LAXBINPATH\" -x \"\${urlBin}/$bin_name\" -fn \"$func_name\" \"\$@\"; }" >> "$LAXCACHEPATH/fun.sh"
 done
 
 # Update cache jika ada modifikasi dan funCache adalah false
 if [ "$funCache" = false ]; then
-    mv "$LAXBINPATH/fun.sh" "$LAXCACHEPATH/fun.sh"
+    mv "$LAXCACHEPATH/fun.sh" "$LAXBINPATH/fun.sh"
     . "$LAXBINPATH/fun.sh"
 fi
