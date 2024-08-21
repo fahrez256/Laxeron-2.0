@@ -179,11 +179,8 @@ echo "$binList" | while read -r bin; do
 
         # Tambahkan fungsi baru
         echo "function ${func_name} { storm -rP \"\$LAXBINPATH\" -x \"\${urlBin}/$bin_name\" -fn \"$func_name\" \"\$@\"; }" >> "$LAXCACHEPATH/fun.sh"
-    ) &
+    ) 
 done
-
-# Tunggu semua proses parallel selesai
-wait
 
 # Update cache jika ada modifikasi dan funCache adalah false
 if [ "$funCache" = false ]; then
