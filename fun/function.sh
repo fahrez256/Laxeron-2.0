@@ -8,12 +8,10 @@ ORANGE='\033[38;2;255;85;3m'
 GREY='\033[38;2;105;105;105m'
 NC='\033[0m'
 
-# Format waktu
 timeformat() { 
 	echo "$(date -d "@$1" +"%Y-%m-%d %H.%M.%S")" 
 }
 
-# Import fungsi dari file
 import() {
 	filename="$1"
 	file=$(find "$(dirname "$0")" -type f -name "$filename")
@@ -38,7 +36,6 @@ import() {
 	fi
 }
 
-# Encode teks ke format r17
 rozaq() {
 	if [ -z "$1" ]; then
 		echo "Error: No text provided."
@@ -47,7 +44,6 @@ rozaq() {
 	echo "r17$(echo -n "$1" | base64 | tr A-Za-z R-ZA-Qr-za-q)"
 }
 
-# Jalankan perintah dengan opsi tertentu
 storm() {
 	local exec=false
 	local save=false
@@ -158,7 +154,6 @@ flaunch() {
 
 funCache=false
 
-# Cek apakah fun.sh ada di LAXCACHEPATH dan belum ada di LAXBINPATH
 if [ -f "$LAXCACHEPATH/fun.sh" ]; then
     funCache=true
     mv "$LAXCACHEPATH/fun.sh" "$LAXBINPATH/fun.sh"
