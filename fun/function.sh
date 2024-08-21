@@ -167,21 +167,21 @@ fi
 
 binList=$(storm https://api.github.com/repos/fahrez256/Laxeron-2.0/contents/bin | grep -o '"name":"[^"]*' | cut -d'"' -f4)
 
-for bin in "$binList"; do
-        bin_name=$(basename "$bin")
-        func_name=${bin_name%%.*}
+for bin in $binList; do
+    bin_name=$(basename "$bin")
+    func_name=${bin_name%%.*}
 
-        # Hapus fungsi jika sudah ada
-        if grep -q "function ${func_name} " "$LAXBINPATH/fun.sh"; then
-            sed -i "/function ${func_name} {/,+1d" "$LAXBINPATH/fun.sh"
-        fi
+    # Hapus fungsi jika sudah ada
+    if grep -q "function ${func_name} " "$LAXBINPATH/fun.sh"; then
+        sed -i "/function ${func_name} {/,+1d" "$LAXBINPATH/fun.sh"
+    fi
 
-        # Tambahkan fungsi baru
-        echo "function ${func_name} { storm -rP \"\$LAXBINPATH\" -x \"\${urlBin}/$bin_name\" -fn \"$func_name\" \"\$@\"; }" >> "$LAXCACHEPATH/fun.sh"
+    # Tambahkan fungsi baru
+    echo "function ${func_name} { storm -rP \"\$LAXBINPATH\" -x \"\${urlBin}/$bin_name\" -fn \"$func_name\" \"\$@\"; }" >> "$LAXBINPATH/fun.sh"
 done
 
 # Update cache jika ada modifikasi dan funCache adalah false
 if [ "$funCache" = false ]; then
-    mv "$LAXCACHEPATH/fun.sh" "$LAXBINPATH/fun.sh"
+    mv "$LAXBINPATH/fun.sh" "$LAXCACHEPATH/fun.sh"
     . "$LAXBINPATH/fun.sh"
 fi
