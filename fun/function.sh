@@ -161,7 +161,7 @@ funCache=false
 # Cek apakah fun.sh ada di LAXCACHEPATH dan belum ada di LAXBINPATH
 if [ -f "$LAXCACHEPATH/fun.sh" ]; then
     funCache=true
-    mv "$LAXCACHEPATH/fun.sh" "$LAXBINPATH/fun.sh"
+    mv -f "$LAXCACHEPATH/fun.sh" "$LAXBINPATH/fun.sh"
     . "$LAXBINPATH/fun.sh"
 fi
 
@@ -182,6 +182,6 @@ done
 
 # Update cache jika ada modifikasi dan funCache adalah false
 if [ "$funCache" = false ]; then
-    mv "$LAXBINPATH/fun.sh" "$LAXCACHEPATH/fun.sh"
+    mv -f "$LAXBINPATH/fun.sh" "$LAXCACHEPATH/fun.sh"
     . "$LAXBINPATH/fun.sh"
 fi
