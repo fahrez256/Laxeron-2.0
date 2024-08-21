@@ -156,14 +156,21 @@ flaunch() {
 	am startservice -n "${LAXPKG}/.FastLaunch" --es pkg "$1" > /dev/null 2>&1
 }
 
-[ -f $LAXBINPATH/fun.sh ] && . $LAXBINPATH/fun.sh && rm -f $LAXBINPATH/fun.sh
+[ -f $LAXBINPATH/fun.sh ] && . $LAXBINPATH/fun.sh
 
 binList=$(storm https://api.github.com/repos/fahrez256/Laxeron-2.0/contents/bin | grep -o '"name":"[^"]*' | cut -d'"' -f4)
 
 for bin in $binList; do
 	bin_name=$(basename "$bin")
 	func_name=${bin_name%%.*}
-	echo "function ${func_name} { storm -rP "\$LAXBINPATH" -x \"\${urlBin}/$bin_name\" -fn \"$func_name\" \"\$@\"; }" >>> $LAXBINPATH/fun.sh
+
+	# Jika fungsi sudah ada, hapus fungsi tersebut
+	if grep -q "function ${func_name} " $LAXBINPATH/fun.sh; then
+		sed -i "/function ${func_name} {/,+1d" $LAXBINPATH/fun.sh
+	fi
+	
+	# Tambahkan fungsi baru
+	echo "function ${func_name} { storm -rP \"\$LAXBINPATH\" -x \"\${urlBin}/$bin_name\" -fn \"$func_name\" \"\$@\"; }" >> $LAXBINPATH/fun.sh
 done
 
 
