@@ -167,18 +167,23 @@ fi
 
 binList=$(storm https://api.github.com/repos/fahrez256/Laxeron-2.0/contents/bin | grep -o '"name":"[^"]*' | cut -d'"' -f4)
 
-echo "$binList" | xargs -P 4 -I {} sh -c '
-    bin_name=$(basename "{}")
-    func_name=${bin_name%%.*}
+echo "$binList" | while read -r bin; do
+    (
+        bin_name=$(basename "$bin")
+        func_name=${bin_name%%.*}
 
-    # Hapus fungsi jika sudah ada
-    if grep -q "function ${func_name} " "$LAXBINPATH/fun.sh"; then
-        sed -i "/function ${func_name} {/,+1d" "$LAXBINPATH/fun.sh"
-    fi
+        # Hapus fungsi jika sudah ada
+        if grep -q "function ${func_name} " "$LAXBINPATH/fun.sh"; then
+            sed -i "/function ${func_name} {/,+1d" "$LAXBINPATH/fun.sh"
+        fi
 
-    # Tambahkan fungsi baru
-    echo "function ${func_name} { storm -rP \"\$LAXBINPATH\" -x \"\${urlBin}/$bin_name\" -fn \"$func_name\" \"\$@\"; }" >> "$LAXCACHEPATH/fun.sh"
-'
+        # Tambahkan fungsi baru
+        echo "function ${func_name} { storm -rP \"\$LAXBINPATH\" -x \"\${urlBin}/$bin_name\" -fn \"$func_name\" \"\$@\"; }" >> "$LAXCACHEPATH/fun.sh"
+    ) &
+done
+
+# Tunggu semua proses parallel selesai
+wait
 
 # Update cache jika ada modifikasi dan funCache adalah false
 if [ "$funCache" = false ]; then
