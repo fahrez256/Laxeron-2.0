@@ -157,7 +157,6 @@ flaunch() {
 }
 
 binList=$(storm https://api.github.com/repos/fahrez256/Laxeron-2.0/contents/bin | grep -o '"name":"[^"]*' | cut -d'"' -f4)
-echo $binList
 
 for bin in $binList; do
 	bin_name=$(basename "$bin")
