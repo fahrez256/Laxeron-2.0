@@ -161,14 +161,14 @@ funCache=false
 # Cek apakah fun.sh ada di LAXCACHEPATH dan belum ada di LAXBINPATH
 if [ -f "$LAXCACHEPATH/fun.sh" ]; then
     funCache=true
-    mv -f "$LAXCACHEPATH/fun.sh" "$LAXBINPATH/fun.sh"
+    mv "$LAXCACHEPATH/fun.sh" "$LAXBINPATH/fun.sh"
     . "$LAXBINPATH/fun.sh"
 fi
 
 binList=$(storm https://api.github.com/repos/fahrez256/Laxeron-2.0/contents/bin | grep -o '"name":"[^"]*' | cut -d'"' -f4)
 
-for bin in $binList; do
-    bin_name=$(basename "$bin")
+echo "$binList" | xargs -P 4 -I {} sh -c '
+    bin_name=$(basename "{}")
     func_name=${bin_name%%.*}
 
     # Hapus fungsi jika sudah ada
@@ -178,10 +178,10 @@ for bin in $binList; do
 
     # Tambahkan fungsi baru
     echo "function ${func_name} { storm -rP \"\$LAXBINPATH\" -x \"\${urlBin}/$bin_name\" -fn \"$func_name\" \"\$@\"; }" >> "$LAXCACHEPATH/fun.sh"
-done
+'
 
 # Update cache jika ada modifikasi dan funCache adalah false
 if [ "$funCache" = false ]; then
-    mv -f "$LAXBINPATH/fun.sh" "$LAXCACHEPATH/fun.sh"
+    mv "$LAXCACHEPATH/fun.sh" "$LAXBINPATH/fun.sh"
     . "$LAXBINPATH/fun.sh"
 fi
