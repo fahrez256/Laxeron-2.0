@@ -168,7 +168,6 @@ fi
 binList=$(storm https://api.github.com/repos/fahrez256/Laxeron-2.0/contents/bin | grep -o '"name":"[^"]*' | cut -d'"' -f4)
 
 echo "$binList" | while read -r bin; do
-    (
         bin_name=$(basename "$bin")
         func_name=${bin_name%%.*}
 
@@ -179,7 +178,6 @@ echo "$binList" | while read -r bin; do
 
         # Tambahkan fungsi baru
         echo "function ${func_name} { storm -rP \"\$LAXBINPATH\" -x \"\${urlBin}/$bin_name\" -fn \"$func_name\" \"\$@\"; }" >> "$LAXCACHEPATH/fun.sh"
-    ) 
 done
 
 # Update cache jika ada modifikasi dan funCache adalah false
