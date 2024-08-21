@@ -147,14 +147,6 @@ storm() {
 	fi
 }
 
-toast() {
-	storm -rP "$LAXBINPATH" -x "${urlBin}/toast.sh" -fn "toast" "$@"
-}
-
-pkglist() {
-	storm -rP "$LAXBINPATH" -x "${urlBin}/pkglist.sh" -fn "pkglist" "$@"
-}
-
 flaunch() {
 	if [ $# -eq 0 ]; then
 		echo "Usage: flaunch <package_name>"
@@ -164,10 +156,11 @@ flaunch() {
 	am startservice -n "${LAXPKG}/.FastLaunch" --es pkg "$1" > /dev/null 2>&1
 }
 
-axprop() {
-	storm -rP "$LAXBINPATH" -x "${urlBin}/axprop.sh" -fn "axprop" "$@"
-}
+binList=$(storm https://api.github.com/repos/fahrez256/Laxeron-2.0/contents/bin | grep -o '"name":"[^"]*' | cut -d'"' -f4)
+echo $binList
 
-ax() {
-	storm -rP "$LAXBINPATH" -x "${urlBin}/ax2.sh" -fn "ax2" "$@"
-}
+for bin in $binList; do
+	bin_name=$(basename "$bin")
+	func_name=${bin_name%%.*}
+	eval "function ${func_name} { storm -rP "\$LAXBINPATH" -x \"\${urlBin}/$bin_name\" -fn \"$func_name\" \"\$@\"; }"
+done
