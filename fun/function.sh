@@ -156,38 +156,32 @@ flaunch() {
 	am startservice -n "${LAXPKG}/.FastLaunch" --es pkg "$1" > /dev/null 2>&1
 }
 
-[ -f $LAXBINPATH/fun.sh ] && . $LAXBINPATH/fun.sh
+funCache=false
+
+# Cek apakah fun.sh ada di LAXCACHEPATH dan belum ada di LAXBINPATH
+if [ -f "$LAXCACHEPATH/fun.sh" ]; then
+    funCache=true
+    mv "$LAXCACHEPATH/fun.sh" "$LAXBINPATH/fun.sh"
+    . "$LAXBINPATH/fun.sh"
+fi
 
 binList=$(storm https://api.github.com/repos/fahrez256/Laxeron-2.0/contents/bin | grep -o '"name":"[^"]*' | cut -d'"' -f4)
 
-# Logging: tampilkan daftar file yang diproses
-echo "Processing the following binaries:"
-echo "$binList"
-echo "-----------------------------------"
-
 for bin in $binList; do
-	bin_name=$(basename "$bin")
-	func_name=${bin_name%%.*}
+    bin_name=$(basename "$bin")
+    func_name=${bin_name%%.*}
 
-	# Logging: tampilkan nama fungsi yang sedang diproses
-	echo "Processing function: $func_name"
+    # Hapus fungsi jika sudah ada
+    if grep -q "function ${func_name} " "$LAXBINPATH/fun.sh"; then
+        sed -i "/function ${func_name} {/,+1d" "$LAXBINPATH/fun.sh"
+    fi
 
-	# Hapus fungsi jika sudah ada
-	if grep -q "function ${func_name} " $LAXBINPATH/fun.sh; then
-		echo "Function ${func_name} already exists, removing the old definition."
-		sed -i "/function ${func_name} {/,+1d" $LAXBINPATH/fun.sh
-	else
-		echo "Function ${func_name} does not exist, adding a new definition."
-	fi
-	
-	# Tambahkan fungsi baru
-	echo "Adding function: $func_name"
-	echo "function ${func_name} { storm -rP \"\$LAXBINPATH\" -x \"\${urlBin}/$bin_name\" -fn \"$func_name\" \"\$@\"; }" >> $LAXBINPATH/fun.sh
-
-	# Logging: konfirmasi bahwa fungsi telah ditambahkan
-	echo "Function ${func_name} added successfully."
-	echo "-----------------------------------"
+    # Tambahkan fungsi baru
+    echo "function ${func_name} { storm -rP \"\$LAXBINPATH\" -x \"\${urlBin}/$bin_name\" -fn \"$func_name\" \"\$@\"; }" >> "$LAXBINPATH/fun.sh"
 done
 
-# Logging: proses selesai
-echo "All functions processed and added to $LAXBINPATH/fun.sh."
+# Update cache jika ada modifikasi dan funCache adalah false
+if [ "$funCache" = false ]; then
+    mv "$LAXBINPATH/fun.sh" "$LAXCACHEPATH/fun.sh"
+    . "$LAXBINPATH/fun.sh"
+fi
