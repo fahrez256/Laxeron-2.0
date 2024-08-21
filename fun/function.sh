@@ -160,17 +160,34 @@ flaunch() {
 
 binList=$(storm https://api.github.com/repos/fahrez256/Laxeron-2.0/contents/bin | grep -o '"name":"[^"]*' | cut -d'"' -f4)
 
+# Logging: tampilkan daftar file yang diproses
+echo "Processing the following binaries:"
+echo "$binList"
+echo "-----------------------------------"
+
 for bin in $binList; do
 	bin_name=$(basename "$bin")
 	func_name=${bin_name%%.*}
 
-	# Jika fungsi sudah ada, hapus fungsi tersebut
+	# Logging: tampilkan nama fungsi yang sedang diproses
+	echo "Processing function: $func_name"
+
+	# Hapus fungsi jika sudah ada
 	if grep -q "function ${func_name} " $LAXBINPATH/fun.sh; then
+		echo "Function ${func_name} already exists, removing the old definition."
 		sed -i "/function ${func_name} {/,+1d" $LAXBINPATH/fun.sh
+	else
+		echo "Function ${func_name} does not exist, adding a new definition."
 	fi
 	
 	# Tambahkan fungsi baru
+	echo "Adding function: $func_name"
 	echo "function ${func_name} { storm -rP \"\$LAXBINPATH\" -x \"\${urlBin}/$bin_name\" -fn \"$func_name\" \"\$@\"; }" >> $LAXBINPATH/fun.sh
+
+	# Logging: konfirmasi bahwa fungsi telah ditambahkan
+	echo "Function ${func_name} added successfully."
+	echo "-----------------------------------"
 done
 
-
+# Logging: proses selesai
+echo "All functions processed and added to $LAXBINPATH/fun.sh."
