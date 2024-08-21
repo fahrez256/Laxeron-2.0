@@ -33,33 +33,42 @@ errorPath="${LAXFILEPATH}/func.log"
 
 useCache=false
 
+# Cek apakah $LAXFUNLOC sudah ada
 if [ -f "$LAXFUNLOC" ]; then
-    if [ -e "$responsePath" ]; then
-        if cp "$responsePath" "$LAXFUNLOC" && chmod +x "$LAXFUNLOC"; then
-            useCache=true
-        else
-            echo "Failed to update $LAXFUNLOC" >&2
-        fi
-    else
-        useCache=true
-    fi
-    
-    $LAXFUN &
+	# Jika responsePath ada, copy ke $LAXFUNLOC dan berikan izin eksekusi
+	if [ -e "$responsePath" ]; then
+		cp "$responsePath" "$LAXFUNLOC" && chmod +x "$LAXFUNLOC"
+	fi
+
+	# Eksekusi LAXFUN
+	$LAXFUN
+	useCache=true
 fi
 
+# Hapus file response dan error jika ada
 rm -f "$responsePath" "$errorPath"
 
-am startservice -n "${LAXPKG}/.Storm" --es api "$functionApi" --es successName "function" --es errorName "func.log" > /dev/null 2>&1 &
+# Memulai service dengan am startservice
+am startservice -n "${LAXPKG}/.Storm" --es api "$functionApi" --es successName "function" --es errorName "func.log" > /dev/null 2>&1
 
+# Jika cache tidak digunakan, tunggu hingga responsePath atau errorPath muncul
 if [ "$useCache" = false ]; then
-    # Cek file dengan sleep interval yang lebih kecil untuk percepatan
-    while [ ! -e "$responsePath" ] && [ ! -e "$errorPath" ]; do
-        sleep 0.05  # Interval sleep lebih kecil untuk mempercepat respons
-    done
-    
-    if cp "$responsePath" "$LAXFUNLOC" && chmod +x "$LAXFUNLOC"; then
-        $LAXFUN &
-    else
-        echo "LAX Function not found or failed to copy :(" >&2
-    fi
+	while [ ! -e "$responsePath" ] && [ ! -e "$errorPath" ]; do
+		# Looping hingga salah satu file muncul
+		# Bisa tambahkan sleep untuk mengurangi load CPU
+		sleep 0.1
+	done
+	
+	# Jika responsePath ditemukan, copy ke $LAXFUNLOC dan set izin eksekusi
+	if [ -e "$responsePath" ]; then
+		cp "$responsePath" "$LAXFUNLOC" && chmod +x "$LAXFUNLOC"
+	fi
+
+	# Cek apakah $LAXFUNLOC sudah terbuat dengan benar
+	if [ -f "$LAXFUNLOC" ]; then
+		# Eksekusi LAXFUN
+		$LAXFUN
+	else
+		echo "LAX Function not found :("
+	fi
 fi
