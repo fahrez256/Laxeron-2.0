@@ -161,7 +161,6 @@ if [ -f "$LAXCACHEPATH/fun.sh" ]; then
 fi
 
 binList=$(storm https://api.github.com/repos/fahrez256/Laxeron-2.0/contents/bin | grep -o '"name":"[^"]*' | cut -d'"' -f4)
-echo "\$LAXFUN" > "$LAXCACHEPATH/fun.sh"
 
 for bin in $binList; do
     bin_name=$(basename "$bin")
@@ -173,7 +172,7 @@ for bin in $binList; do
     fi
 
     # Tambahkan fungsi baru
-    echo "function ${func_name} { storm -rP \"\$LAXBINPATH\" -x \"\${urlBin}/$bin_name\" -fn \"$func_name\" \"\$@\"; }" >> "$LAXCACHEPATH/fun.sh"
+    echo "function ${func_name} { \$LAXFUN && storm -rP \"\$LAXBINPATH\" -x \"\${urlBin}/$bin_name\" -fn \"$func_name\" \"\$@\"; }" >> "$LAXCACHEPATH/fun.sh"
 done
 
 # Update cache jika ada modifikasi dan funCache adalah false
