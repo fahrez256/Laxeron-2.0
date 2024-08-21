@@ -30,27 +30,36 @@ echo "$LAXCORE" | grep -q "$currentCore" || { echo "Axeron Not Original" && exit
 functionApi="${LAXMAINPATH}/fun/function.sh"
 responsePath="${LAXFILEPATH}/function"
 errorPath="${LAXFILEPATH}/func.log"
+
 useCache=false
 
 if [ -f "$LAXFUNLOC" ]; then
-	[ -e "$responsePath" ] && cp "$responsePath" "$LAXFUNLOC" && chmod +x "$LAXFUNLOC"
-	$LAXFUN
-	useCache=true
+    if [ -e "$responsePath" ]; then
+        if cp "$responsePath" "$LAXFUNLOC" && chmod +x "$LAXFUNLOC"; then
+            useCache=true
+        else
+            echo "Failed to update $LAXFUNLOC" >&2
+        fi
+    else
+        useCache=true
+    fi
+    
+    $LAXFUN &
 fi
 
 rm -f "$responsePath" "$errorPath"
 
-am startservice -n "${LAXPKG}/.Storm" --es api "$functionApi" --es successName "function" --es errorName "func.log" > /dev/null 2>&1
+am startservice -n "${LAXPKG}/.Storm" --es api "$functionApi" --es successName "function" --es errorName "func.log" > /dev/null 2>&1 &
 
 if [ "$useCache" = false ]; then
-	while [ ! -e "$responsePath" ] && [ ! -e "$errorPath" ]; do
-	done
-	
-	cp "$responsePath" "$LAXFUNLOC" && chmod +x "$LAXFUNLOC"
-
-	if [ -f "$LAXFUNLOC" ]; then
-		$LAXFUN
-	else
-		echo "LAX Function not found :("
-	fi
+    # Cek file dengan sleep interval yang lebih kecil untuk percepatan
+    while [ ! -e "$responsePath" ] && [ ! -e "$errorPath" ]; do
+        sleep 0.05  # Interval sleep lebih kecil untuk mempercepat respons
+    done
+    
+    if cp "$responsePath" "$LAXFUNLOC" && chmod +x "$LAXFUNLOC"; then
+        $LAXFUN &
+    else
+        echo "LAX Function not found or failed to copy :(" >&2
+    fi
 fi
