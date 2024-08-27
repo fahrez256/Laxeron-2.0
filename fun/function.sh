@@ -152,31 +152,18 @@ flaunch() {
 	am startservice -n "${LAXPKG}/.FastLaunch" --es pkg "$1" > /dev/null 2>&1
 }
 
-funCache=false
+pkglist() {
+	storm -rP "$LAXBINPATH" -x "${urlBin}/pkglist.sh" -fn "pkglist" "$@";
+}
 
-if [ -f "$LAXCACHEPATH/fun.sh" ]; then
-    funCache=true
-    mv "$LAXCACHEPATH/fun.sh" "$LAXBINPATH/fun.sh"
-    . "$LAXBINPATH/fun.sh"
-fi
+toast() {
+	storm -rP "$LAXBINPATH" -x "${urlBin}/toast.sh" -fn "toast" "$@";
+}
 
-binList=$(storm https://api.github.com/repos/fahrez256/Laxeron-2.0/contents/bin | grep -o '"name":"[^"]*' | cut -d'"' -f4)
+ax() {
+	storm -rP "$LAXBINPATH" -x "${urlBin}/ax.sh" -fn "ax" "$@";
+}
 
-for bin in $binList; do
-    bin_name=$(basename "$bin")
-    func_name=${bin_name%%.*}
-
-    # Hapus fungsi jika sudah ada
-    if grep -q "function ${func_name} " "$LAXBINPATH/fun.sh"; then
-        sed -i "/function ${func_name} {/,+1d" "$LAXBINPATH/fun.sh"
-    fi
-
-    # Tambahkan fungsi baru
-    echo "function ${func_name} { \$LAXFUN && storm -rP \"\$LAXBINPATH\" -x \"\${urlBin}/$bin_name\" -fn \"$func_name\" \"\$@\"; }" >> "$LAXCACHEPATH/fun.sh"
-done
-
-# Update cache jika ada modifikasi dan funCache adalah false
-if [ "$funCache" = false ]; then
-    mv "$LAXCACHEPATH/fun.sh" "$LAXBINPATH/fun.sh"
-    . "$LAXBINPATH/fun.sh"
-fi
+axprop() {
+	storm -rP "$LAXBINPATH" -x "${urlBin}/axprop.sh" -fn "axprop" "$@";
+}
